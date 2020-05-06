@@ -2,23 +2,33 @@ const TaskModel = require('../model/TaskModel');
 const { isPast } = require('date-fns');
 
 
-const TaskValidation = async(req, res, next) => {
-    const {macaddress, type, title, description, when } = req.body;
-    if (!macaddress)
-    return res.status(400).json({ error: 'Missing macaddress'})
-    else if (!type)
-    return res.status(400).json({ error: 'Missing type'})
-    else if (!title)
-    return res.status(400).json({ error: 'Missing title'})
-    else if (!description)
-    return res.status(400).json({ error: 'Missing description'})
-    else if (!when)
-    return res.status(400).json({ error: 'Missing when'})
-    else if(isPast(new Date(when)))
-    return res.status(400).json({ error: "Can't create an task in the past"})
-    else{
-        next();
+const TaskValidation = (req, res, next) => {
+    // Body from req
+    const body = req.body
+
+    // A collection of error messages:
+    const errorMessages = [];
+    
+    // These arguments are required
+    const requiredArguments = ['type', 'title', 'description', 'when', 'macaddress'];
+
+    // Get an array of argument names not present in body.
+    const invalidArguments = requiredArguments.filter((arg) => body[arg] === undefined);
+  
+    // Push an error message for every invalid argument.
+    invalidArguments.forEach((arg) => errorMessages.push(`Missing ${arg}.`));
+  
+    // Push an error message if date is in the past
+    if (isPast(new Date(body['when']))) {
+      errorMessages.push("Can't create an task in the past.");
     }
-};
+    // If any error, send a Bad Request response with ALL error messages.
+    if (errorMessages.length) {
+      return res.status(400).json({ error: errorMessages.join(' ') });
+    }
+    
+    // Go to next middleware if there are no errors.
+    return next();
+  };
 
 module.exports = TaskValidation;
