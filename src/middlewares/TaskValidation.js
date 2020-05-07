@@ -22,11 +22,19 @@ const TaskValidation = (req, res, next) => {
     if (isPast(new Date(body['when']))) {
       errorMessages.push("Can't create an task in the past.");
     }
+    else{
+      const exists = TaskModel.findOne({
+        'when': {'$eq': new Date(body['when'])},
+        'macaddress': {'$in': body['macaddress']}
+      });
+      if(exists){
+        errorMessages.push("Alredy exist");
+      }
+    }
     // If any error, send a Bad Request response with ALL error messages.
     if (errorMessages.length) {
       return res.status(400).json({ error: errorMessages.join(' ') });
     }
-    
     // Go to next middleware if there are no errors.
     return next();
   };
