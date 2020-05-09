@@ -17,5 +17,15 @@ class TaskController {
       .then((response) => res.status(200).json(response))
       .catch((error) => res.status(500).json(error));
   }
+
+  async all(req, res) {
+    await TaskModel.find({
+      macaddress: {
+        $in: req.body.macaddress,
+      },
+    }.sort('when')
+      .then((response) => res.status(200).json(response))
+      .catch((error) => res.status(500).json(error)));
+  }
 }
 module.exports = new TaskController();

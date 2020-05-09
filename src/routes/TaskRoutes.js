@@ -9,4 +9,6 @@ router.post('/task', TaskValidation, TaskController.create);
 
 router.put('/task/:id', TaskValidation, TaskController.update);
 
+router.get('/task/all', TaskController.all);
+
 module.exports = router;
