@@ -23,9 +23,9 @@ class TaskController {
       macaddress: {
         $in: req.body.macaddress,
       },
-    }.sort('when')
+    }).sort('when')
       .then((response) => res.status(200).json(response))
-      .catch((error) => res.status(500).json(error)));
+      .catch((error) => res.status(500).json(error));
   }
 }
 module.exports = new TaskController();
