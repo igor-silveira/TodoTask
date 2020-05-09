@@ -17,17 +17,26 @@ const TaskValidation = (req, res, next) => {
 
   // Push an error message for every invalid argument.
   invalidArguments.forEach((arg) => errorMessages.push(`Missing ${arg}.`));
-
+  // Declare
+  let exists;
   // Push an error message if date is in the past
   if (isPast(new Date(body.when))) {
     errorMessages.push("Can't create an task in the past.");
   } else {
-    const exists = TaskModel.findOne({
-      when: { $eq: new Date(body.when) },
-      macaddress: { $in: body.macaddress },
-    });
+    if (req.params.id) {
+      exists = TaskModel.findOne({
+        _id: { $ne: req.params.id },
+        when: { $eq: new Date(body.when) },
+        macaddress: { $in: body.macaddress },
+      });
+    } else {
+      exists = TaskModel.findOne({
+        when: { $eq: new Date(body.when) },
+        macaddress: { $in: body.macaddress },
+      });
+    }
     if (exists) {
-      errorMessages.push('Alredy exist');
+      errorMessages.push('Alredy exists');
     }
   }
   // If any error, send a Bad Request response with ALL error messages.
