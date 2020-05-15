@@ -18,6 +18,13 @@ router.delete('/task/:id', TaskController.delete);
 
 router.put('/task/:id/:done', TaskController.update);
 
-router.get('/task', MacaddressValidation, TaskController.late);
+router.get('/task/late', MacaddressValidation, TaskController.late);
+
+router.get('task/today', MacaddressValidation, TaskController.today);
+
+router.get('task/month', MacaddressValidation, TaskController.month);
+
+router.get('task/year', MacaddressValidation, TaskController.year);
+
 
 module.exports = router;
