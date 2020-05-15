@@ -14,4 +14,6 @@ router.get('/task', MacaddressValidation, TaskController.all);
 
 router.get('/task/:id', TaskController.show);
 
+router.delete('/task/:id', TaskController.delete);
+
 module.exports = router;
