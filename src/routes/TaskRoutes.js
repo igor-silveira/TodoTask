@@ -12,4 +12,6 @@ router.put('/task/:id', TaskValidation, TaskController.update);
 
 router.get('/task', MacaddressValidation, TaskController.all);
 
+router.get('/task/:id', TaskController.show);
+
 module.exports = router;
