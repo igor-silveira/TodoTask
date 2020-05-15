@@ -18,4 +18,6 @@ router.delete('/task/:id', TaskController.delete);
 
 router.put('/task/:id/:done', TaskController.update);
 
+router.get('/task', MacaddressValidation, TaskController.late);
+
 module.exports = router;
